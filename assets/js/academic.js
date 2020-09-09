@@ -200,6 +200,35 @@
     }
   });
 
+  // Publications -- tab
+  $('.pub-filters-two').on('click', function () {
+    let $this = $(this);
+    $this.addClass('color_3f51b5');
+    $this.siblings().removeClass('color_3f51b5');
+    // Get group key.
+    let filterGroup = 'pubtype';
+
+    // Set filter for group.
+    pubFilters[filterGroup] = $this[0].getAttribute('value');
+
+    // Combine filters.
+    filterValues = concatValues(pubFilters);
+
+    // Activate filters.
+    $grid_pubs.isotope();
+
+    // If filtering by publication type, update the URL hash to enable direct linking to results.
+    if (filterGroup == "pubtype") {
+      // Set hash URL to current filter.
+      let url = $(this).val();
+      if (url.substr(0, 9) == '.pubtype-') {
+        window.location.hash = url.substr(9);
+      } else {
+        window.location.hash = '';
+      }
+    }
+  });
+
   // Filter publications according to hash in URL.
   function filter_publications() {
     let urlHash = window.location.hash.replace('#', '');

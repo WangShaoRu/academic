@@ -17,11 +17,20 @@
       {{ end }}
 
       <div class="form-row mb-4">
-        <div class="col-auto">
+        <!-- <div class="col-auto">
           <input type="search" class="filter-search" placeholder="{{ i18n "search_placeholder" }}" autocapitalize="off"
           autocomplete="off" autocorrect="off" role="textbox" spellcheck="false">
+        </div> -->
+        <div data-filter-group="pubtype" class="tab-div">
+          <span value="*" class="pub-filters-two col-lg-3 tab-style">{{ i18n "publication_type" }}</span>
+          {{ $pub_types := partial "functions/get_pub_types" $ }}
+          {{ range $index, $taxonomy := site.Taxonomies.publication_types }}
+          <span value=".pubtype-{{ (int $index) }}" class="pub-filters-two col-lg-3 tab-style">
+            {{ index $pub_types (int $index) }}
+          </span>
+          {{ end }}
         </div>
-        <div class="col-auto">
+        <!-- <div class="col-auto">
           <select class="pub-filters pubtype-select form-control form-control-sm" data-filter-group="pubtype">
             <option value="*">{{ i18n "publication_type" }}</option>
             {{ $pub_types := partial "functions/get_pub_types" $ }}
@@ -31,8 +40,8 @@
             </option>
             {{ end }}
           </select>
-        </div>
-        <div class="col-auto">
+        </div> -->
+        <!-- <div class="col-auto">
           <select class="pub-filters form-control form-control-sm" data-filter-group="year">
             <option value="*">{{ i18n "date" }}</option>
             {{ $years_sorted := $.Scratch.GetSortedMapValues "years" }}
@@ -44,7 +53,7 @@
             {{ end }}
             {{ end }}
           </select>
-        </div>
+        </div> -->
       </div>
 
       <div id="container-publications">
