@@ -1,6 +1,7 @@
 {{- define "main" -}}
 
 {{ partial "page_header.html" . }}
+{{ $year := "" }}
 
 <div class="universal-wrapper">
   <div class="row">
@@ -66,6 +67,9 @@
         {{ end }}
 
         <div class="grid-sizer col-lg-12 isotope-item pubtype-{{ $.Scratch.Get "pubtype" }} year-{{ .Date.Format "2006" }}">
+          <span>
+            {{ .Date.Format "2006" }}
+          </span>
           {{ if eq $.Params.view 1 }}
             {{ partial "li_list" . }}
           {{ else if eq $.Params.view 3 }}
