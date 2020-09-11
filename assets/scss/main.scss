@@ -69,3 +69,8 @@ $sta-dark-home-section-even: {{ $scr.Get "dark_home_section_even" }};
   font-weight: 600;
 }
 
+@media only screen and (min-width: 1001px) {
+  .universal-wrapper {
+    width: 1200px!important;
+  }
+}
