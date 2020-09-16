@@ -29,7 +29,7 @@
 {{ $js_tag_classes := delimit (apply (apply $item.Params.tags "replace" "." " " "-") "printf" "js-id-%s" ".") " " }}
 
 <div class="col-lg-12 project-item isotope-item {{ $js_tag_classes | safeHTMLAttr }}">
-  <div class="row align-items-center">
+  <div class="row align-items-flex-start">
     <div class="col-16 col-md-8">
       <h3 class="article-title mb-0 mt-0">
         {{- if $do_link}}<a href="{{ $link }}" {{ $target | safeHTMLAttr }}>{{end -}}
@@ -51,7 +51,7 @@
     <div class="col-8 col-md-4 order-first {{$order}}">
       {{ $resource := ($item.Resources.ByType "image").GetMatch "*featured*" }}
       {{ with $resource }}
-      {{ $image := .Resize "540x" }}
+      {{ $image := .Resize "540x350" }}
       {{if $do_link}}<a href="{{ $link }}" {{ $target | safeHTMLAttr }}>{{end}}
         <img src="{{ $image.RelPermalink }}" alt="">
       {{if $do_link}}</a>{{end}}

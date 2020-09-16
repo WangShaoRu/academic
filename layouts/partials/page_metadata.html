@@ -23,7 +23,9 @@
           {{ i18n "last_updated" }}
       {{ end }}
     {{ end }}
-    {{ $date }}
+    {{ if ne $page.Type "project" }}
+      {{ $date }}
+    {{ end }}
   </span>
   {{ end }}
 
