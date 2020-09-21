@@ -21,6 +21,7 @@ body {
   color: inherit;
   background-color: $sta-background;
   margin-top: 70px; /* Offset body content by navbar height. */
+  padding: 0 30px;
   padding-top: 0;
   counter-reset: captions;
 }
@@ -624,3 +625,4 @@ div.alert a {
   background-color: #fff5f7;
   border-color: #ff3860;
 }
+
