@@ -28,7 +28,7 @@
         <div style="width:100%;position: absolute;bottom: 0px;left: 0;background: #fff;bottom: 0;opacity: {{$item.opacity | default "0.8"}};;">
           {{ with $item.content }}
           <p class="hero-lead"
-            style="{{if eq $item.align "left"}}color: #333;font-size: 16px;{{else if eq $item.align "right"}}margin-left: auto; margin-right: 0;{{end}}">
+            style="{{if eq $item.align "left"}}color: #333;font-size: 16px;padding: 0 10px;{{else if eq $item.align "right"}}margin-left: auto; margin-right: 0;{{end}}">
             {{ . | markdownify | emojify }}
           </p>
           {{ end }}

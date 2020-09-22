@@ -1,5 +1,6 @@
 {{/* Notify JS that this is a widget page */}}
-<span class="js-widget-page d-none"></span>
+<span class="js-widget-page d-none">
+</span>
 
 {{/* Get widget page */}}
 {{ $page := "" }}
@@ -25,15 +26,101 @@
 
 
 {{/* Load page sections */}}
+<div class="center">
 
-<div class="left"> 
-  <!-- {{site.GetPage}}
+  {{ range $index, $st := where ( $headless_bundle.Resources.ByType "page" ) ".Params.active" "!=" false }}
+
+  {{/* Begin widget styling */}}
+  {{ $bg := $st.Params.design.background }}
+  {{ $logo_title := $st.Params.logo_title }}
+  {{ $logo_content := $st.Params.logo_content }}
+  {{ $hugo_logo := $st.Params.hugo_logo }}
+  {{ $style := "" }}
+
+  {{ if $bg.color }}
+  {{ $style = printf "background-color: %s;" ($bg.color | default "transparent") }}
+  {{ end }}
+
+  {{ if and $bg.gradient_start $bg.gradient_end }}
+  {{ $style = printf "%sbackground-image: linear-gradient(%s, %s);" $style $bg.gradient_start $bg.gradient_end }}
+  {{ end }}
+
+  {{ if $bg.image }}
+  {{ $darken := "" }}
+  {{ if $bg.image_darken }}
+  {{ $darken = printf "linear-gradient(rgba(0, 0, 0, %s), rgba(0, 0, 0, %s))," (string $bg.image_darken) (string $bg.image_darken) }}
+  {{ end }}
+  {{/* See Hugo note on linking assets in styles: https://github.com/gohugoio/hugoThemes#common-permalink-issues */}}
+  {{ $media_dir := $.Scratch.Get "media_dir" }}
+  {{ $style = printf "%sbackground-image: %s url('%s');" $style $darken (printf "%s/%s" $media_dir $bg.image | absURL) }}
+  {{ with $bg.image_size }}
+  {{/* Allow sizes: actual, cover, and contain. */}}
+  {{ $style = printf "%sbackground-size: %s;" $style (replace . "actual" "auto") }}
+  {{ end }}
+  {{ with $bg.image_position }}
+  {{/* Allow valid CSS positions including left, center, and right. */}}
+  {{ $style = printf "%sbackground-position: %s;" $style . }}
+  {{ end }}
+  {{ end }}
+
+  {{ with $st.Params.design.spacing.padding }}
+  {{ $style_pad := printf "padding: %s;" (delimit . " ") }}
+  {{ $style = print $style $style_pad }}
+  {{ end }}
+
+  {{/* Support for clip path (design.clip_path) */}}
+  {{ with $st.Params.design.clip_path }}
+  {{ $style_clip_path := printf "clip-path: %s;" . }}
+  {{ $style = print $style $style_clip_path }}
+  {{ end }}
+
+  {{ with $st.Params.advanced.css_style }}
+  {{ $style = print $style . }}
+  {{ end }}
+
+  {{/* Fix Hugo's ContentBaseName returning wrong file base name when page section is within a bundle. */}}
+  {{ $hash_id := replace $st.File.ContentBaseName "index" (path.Base (path.Split .Path).Dir) }}
+
+  {{ $widget := or $st.Params.widget "blank" }}
+  {{ if eq $widget "custom" }}{{ $widget = "blank" }}{{ end }}{{/* Support legacy Custom widget */}}
+  {{ if eq $widget "projects" }}{{ $widget = "portfolio" }}{{ end }}{{/* Support legacy Projects widget */}}
+
+  {{ $widget_path := printf "widgets/%s.html" $widget }}
+  {{ $widget_args := dict "root" $ "page" $st "hash_id" $hash_id }}
+  {{ $css_classes := $st.Params.advanced.css_class | default "" }}
+  {{ $extra_attributes := "" }}
+  {{ $use_container := true }}
+
+  {{/* Special case: Slider widget. */}}
+  {{ if in (slice "slider") $widget }}
+  {{ $css_classes = print $css_classes " carousel slide" }}
+  {{ $extra_attributes = printf "data-ride=\"carousel\" data-interval=\"%s\"" (string $st.Params.interval | default "5000") }}
+  {{ $use_container = false }}
+  {{ end }}
+
+  {{ $widget_class := printf "wg-%s" (replace (replace $widget "." "-") "_" "-") }}
+
+  {{ if eq $hash_id "gallery" }}
   <div>
-    <img src="hugo_logo.jpg" />
-  </div> -->
+    <!-- <div class="logo_img">
+      <img src="{{$hugo_logo}}" class="img" />
+    </div>
+    <div class="logo_span">
+      <span class="span_title">{{$logo_title}}</span>
+      <br/>
+      <span class="span_subTitle">{{$logo_content}}</span>
+    </div> -->
+    <div class="logo_img">
+      <img src="{{$hugo_logo}}" class="" />
+    </div>
+  </div>
+  {{ end }}
+
+  {{ end }}
+</div>
+<div class="left"> 
 
 {{ range $index, $st := where ( $headless_bundle.Resources.ByType "page" ) ".Params.active" "!=" false }}
-
 
   {{/* Begin widget styling */}}
   {{ $bg := $st.Params.design.background }}
@@ -101,7 +188,6 @@
   {{ end }}
 
   {{ $widget_class := printf "wg-%s" (replace (replace $widget "." "-") "_" "-") }}
-
   {{ if eq $hash_id "gallery" }}
     <section id="{{$hash_id}}"
       class=" {{$hash_id}} home-section {{$widget_class}} {{if $bg.text_color_light}}dark{{end}} {{if $bg.image}} bg-image{{if ($bg.image_parallax | default true) }} parallax{{end}}{{end}} {{with $css_classes}}{{.}}{{end}}"
@@ -222,4 +308,30 @@
   float: right;
   overflow: hidden;
 }
+.center {
+  width: 100%;
+  overflow: hidden;
+  padding: 20px 0;
+}
+.center .logo_img {
+  float: left;
+}
+.center .logo_img .img {
+  width: 80%;
+}
+.center .logo_span {
+  float: left;
+  padding: 10px 0 0px 20px;
+}
+.center .logo_span .span_title {
+  font-weight: 400;
+  margin-top: 1rem;
+  margin-bottom: .5rem;
+  line-height: 1.25;
+  font-size: 2.25rem;
+}
+.center .logo_span .span_subTitle {
+  color: #d8d8d8;
+}
 </style>
+
