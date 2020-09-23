@@ -57,8 +57,10 @@ $sta-dark-home-section-even: {{ $scr.Get "dark_home_section_even" }};
 }
 
 .tab-style {
-  color: #5760A0;
+  // color: #5760A0;
+  color: $sta-menu-primary;
   border-right: 2px solid #d8d8d8;
+  font-size: #{$sta-font-size-small*1.5}px;
 }
 
 .tab-div .tab-style:last-child {
