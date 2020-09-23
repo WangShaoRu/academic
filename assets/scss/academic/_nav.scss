@@ -6,7 +6,7 @@
   height: 70px;
   background: $sta-menu-primary;
   box-shadow: 0 0.125rem 0.25rem 0 rgba(0,0,0,.11);
-  font-size: #{$sta-font-size-small}px;
+  font-size: #{$sta-font-size-small*1.25}px;
   position: fixed;
   top: 0;
   right: 0;
@@ -20,6 +20,8 @@
   .nav-item {
     // For z-index compatibility with logo on mobile layout, otherwise nav-item can't be clicked when logo present.
     position: relative;
+    padding-left: 8px;
+    padding-right: 8px;
   }
   @include media-breakpoint-down(md) {
     height: 50px;

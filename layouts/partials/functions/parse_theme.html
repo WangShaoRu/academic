@@ -57,6 +57,7 @@
 {{- $scr.Set "menu_text" $theme.menu_text -}}
 {{- $scr.Set "menu_text_active" $theme.menu_text_active -}}
 {{- $scr.Set "menu_title" $theme.menu_title -}}
+{{- $scr.Set "menu_brand" ($theme.menu_brand | default $theme.menu_title) -}}
 
 {{- $scr.Set "dark_menu_primary" ($theme.dark.menu_primary | default "rgb(40, 42, 54)") -}}
 {{- $scr.Set "dark_menu_text" ($theme.dark.menu_text | default "white") -}}
