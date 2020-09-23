@@ -203,8 +203,8 @@
   // Publications -- tab
   $('.pub-filters-two').on('click', function () {
     let $this = $(this);
-    $this.addClass('color_3f51b5');
-    $this.siblings().removeClass('color_3f51b5');
+    $this.addClass('tab_bold');
+    $this.siblings().removeClass('tab_bold');
     // Get group key.
     let filterGroup = 'pubtype';
 

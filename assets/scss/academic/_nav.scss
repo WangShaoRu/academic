@@ -206,7 +206,7 @@
 
 ul.nav-icons {
   list-style-type: none;
-  font-size: 18px;
+  font-size: #{$sta-font-size-small*1.25}px;
   padding: 0.5rem 0 0.5rem 0;
   margin: 0;
 }

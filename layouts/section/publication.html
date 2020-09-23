@@ -11,11 +11,11 @@
       <div class="article-style">{{ . }}</div>
       {{ end }}
 
-      {{/* Array of distinct years. */}}
+      <!-- {{/* Array of distinct years. */}}
       {{ range .Pages.ByDate.Reverse }}
         {{ $year := print (.Date.Format "2006") }}
         {{ $.Scratch.SetInMap "years" $year $year }}
-      {{ end }}
+      {{ end }} -->
 
       <div class="form-row mb-4">
         <!-- <div class="col-auto">
@@ -57,12 +57,19 @@
         </div> -->
       </div>
 
-      {{ $years_sorted := $.Scratch.GetSortedMapValues "years" }}
+      {{/* Array of distinct years. */}}
+      {{ range .Pages.ByDate.Reverse }}
+        {{ $year_from_date := print (.Date.Format "2006") }}
+        {{ $y := .Params.year | default $year_from_date }}
+        {{ $.Scratch.SetInMap "year_list" $y $y }}
+      {{ end }}
+
+      {{ $years_sorted := $.Scratch.GetSortedMapValues "year_list" }}
       {{ $pages := .Pages.ByDate.Reverse }}
 
       {{ if $years_sorted }}
         {{ range $year := sort $years_sorted "" "desc" }}
-        <span>
+        <span class="year">
           {{ $year }}
         </span>
         <div id="container-publications">
@@ -72,9 +79,12 @@
           {{ else }}
             {{ $.Scratch.Set "pubtype" 0 }}
           {{ end }}
-  
+
+          <!-- {{ $y := .Params.year }} -->
           <div class="grid-sizer col-lg-12 isotope-item pubtype-{{ $.Scratch.Get "pubtype" }} year-{{ .Date.Format "2006" }}">
-            {{ $this_year := .Date.Format "2006" }}
+            <!-- {{ $this_year := .Date.Format "2006" }} -->
+            {{ $year_from_date := print (.Date.Format "2006") }}
+            {{ $this_year := .Params.year | default $year_from_date }}
             {{ if eq $this_year $year}}
               {{ if eq $.Params.view 1 }}
                 {{ partial "li_list" . }}
@@ -97,5 +107,12 @@
     </div>
   </div>
 </div>
+
+<style>
+  .year {
+    padding-left: 15px;
+    font-weight: bold;
+  }
+</style>
 
 {{- end -}}
