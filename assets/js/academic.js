@@ -137,7 +137,8 @@
       let $this = $(this);
       let searchResults = searchRegex ? $this.text().match(searchRegex) : true;
       let filterResults = filterValues ? $this.is(filterValues) : true;
-      return searchResults && filterResults;
+      let isfix = $this.is(".pubtype-fix");
+      return isfix || (searchResults && filterResults);
     }
   });
 
