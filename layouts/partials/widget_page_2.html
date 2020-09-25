@@ -295,6 +295,101 @@
 
   {{ end }}
 </div>
+<div class="center">
+
+  {{ range $index, $st := where ( $headless_bundle.Resources.ByType "page" ) ".Params.active" "!=" false }}
+
+  {{/* Begin widget styling */}}
+  {{ $bg := $st.Params.design.background }}
+  {{ $logo_title := $st.Params.logo_title }}
+  {{ $logo_content := $st.Params.logo_content }}
+  {{ $hugo_logo := $st.Params.hugo_logo }}
+  {{ $hugo_logo2 := $st.Params.hugo_logo2 }}
+  {{ $hugo_logo3 := $st.Params.hugo_logo3 }}
+  {{ $style := "" }}
+
+  {{ if $bg.color }}
+  {{ $style = printf "background-color: %s;" ($bg.color | default "transparent") }}
+  {{ end }}
+
+  {{ if and $bg.gradient_start $bg.gradient_end }}
+  {{ $style = printf "%sbackground-image: linear-gradient(%s, %s);" $style $bg.gradient_start $bg.gradient_end }}
+  {{ end }}
+
+  {{ if $bg.image }}
+  {{ $darken := "" }}
+  {{ if $bg.image_darken }}
+  {{ $darken = printf "linear-gradient(rgba(0, 0, 0, %s), rgba(0, 0, 0, %s))," (string $bg.image_darken) (string $bg.image_darken) }}
+  {{ end }}
+  {{/* See Hugo note on linking assets in styles: https://github.com/gohugoio/hugoThemes#common-permalink-issues */}}
+  {{ $media_dir := $.Scratch.Get "media_dir" }}
+  {{ $style = printf "%sbackground-image: %s url('%s');" $style $darken (printf "%s/%s" $media_dir $bg.image | absURL) }}
+  {{ with $bg.image_size }}
+  {{/* Allow sizes: actual, cover, and contain. */}}
+  {{ $style = printf "%sbackground-size: %s;" $style (replace . "actual" "auto") }}
+  {{ end }}
+  {{ with $bg.image_position }}
+  {{/* Allow valid CSS positions including left, center, and right. */}}
+  {{ $style = printf "%sbackground-position: %s;" $style . }}
+  {{ end }}
+  {{ end }}
+
+  {{ with $st.Params.design.spacing.padding }}
+  {{ $style_pad := printf "padding: %s;" (delimit . " ") }}
+  {{ $style = print $style $style_pad }}
+  {{ end }}
+
+  {{/* Support for clip path (design.clip_path) */}}
+  {{ with $st.Params.design.clip_path }}
+  {{ $style_clip_path := printf "clip-path: %s;" . }}
+  {{ $style = print $style $style_clip_path }}
+  {{ end }}
+
+  {{ with $st.Params.advanced.css_style }}
+  {{ $style = print $style . }}
+  {{ end }}
+
+  {{/* Fix Hugo's ContentBaseName returning wrong file base name when page section is within a bundle. */}}
+  {{ $hash_id := replace $st.File.ContentBaseName "index" (path.Base (path.Split .Path).Dir) }}
+
+  {{ $widget := or $st.Params.widget "blank" }}
+  {{ if eq $widget "custom" }}{{ $widget = "blank" }}{{ end }}{{/* Support legacy Custom widget */}}
+  {{ if eq $widget "projects" }}{{ $widget = "portfolio" }}{{ end }}{{/* Support legacy Projects widget */}}
+
+  {{ $widget_path := printf "widgets/%s.html" $widget }}
+  {{ $widget_args := dict "root" $ "page" $st "hash_id" $hash_id }}
+  {{ $css_classes := $st.Params.advanced.css_class | default "" }}
+  {{ $extra_attributes := "" }}
+  {{ $use_container := true }}
+
+  {{/* Special case: Slider widget. */}}
+  {{ if in (slice "slider") $widget }}
+  {{ $css_classes = print $css_classes " carousel slide" }}
+  {{ $extra_attributes = printf "data-ride=\"carousel\" data-interval=\"%s\"" (string $st.Params.interval | default "5000") }}
+  {{ $use_container = false }}
+  {{ end }}
+
+  {{ $widget_class := printf "wg-%s" (replace (replace $widget "." "-") "_" "-") }}
+
+  {{ if eq $hash_id "gallery" }}
+  <div>
+    <!-- <div class="logo_img">
+      <img src="{{$hugo_logo}}" class="img" />
+    </div>
+    <div class="logo_span">
+      <span class="span_title">{{$logo_title}}</span>
+      <br/>
+      <span class="span_subTitle">{{$logo_content}}</span>
+    </div> -->
+    <div class="logo_img2" style="width: 50%;">
+      <img src="{{$hugo_logo2}}" class="img3" />
+      <img src="{{$hugo_logo3}}" class="img3" style="margin-top: 16px;width: 50%;" />
+    </div>
+  </div>
+  {{ end }}
+
+  {{ end }}
+</div>
 
 <style>
 
@@ -317,9 +412,14 @@
 }
 .center .logo_img {
   float: left;
+  width: 50%;
 }
 .center .logo_img .img {
-  width: 80%;
+  width: 40%;
+}
+.center .logo_img .img2 {
+  width: 58%;
+  float: right;
 }
 .center .logo_span {
   float: left;
@@ -334,6 +434,12 @@
 }
 .center .logo_span .span_subTitle {
   color: #d8d8d8;
+}
+.logo_img2 {
+  overflow: hidden;
+}
+.img3 {
+  float: left;
 }
 </style>
 
