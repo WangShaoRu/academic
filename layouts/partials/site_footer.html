@@ -34,4 +34,26 @@
     </span>
     {{ end }}
   </p>
+
+  {{ $logo_nlpr := site.Params.logo_nlpr }}
+  {{ $logo_casia := site.Params.logo_casia }}
+  <div>
+    <div class="logo_img2">
+      <img src="{{$logo_nlpr}}" class="img3" />
+      <img src="{{$logo_casia}}" class="img3" />
+    </div>
+  </div>
 </footer>
+
+<style>
+  .logo_img2 {
+    float: right;
+    overflow: hidden;
+    width: 50%;
+  }
+  .img3 {
+  float: right;
+  /* margin-top: 16px; */
+  width: 50%;
+}
+</style>

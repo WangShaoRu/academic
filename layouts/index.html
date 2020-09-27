@@ -17,8 +17,11 @@
 {{/* Generate homepage. */}}
 {{ if eq .Type "book" }}
   {{ partial "book_layout.html" . }}
-{{ else }}
+{{ else if .IsHome }}
+  {{/* Rewrite homepage */}}
   {{ partial "widget_page_2.html" . }}
+{{ else }}
+  {{ partial "widget_page.html" . }}
 {{ end }}
 
 {{- end -}}
