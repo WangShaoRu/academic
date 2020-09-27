@@ -34,11 +34,22 @@
     {{ end }}
   </p>
 
-  {{ $logo_nlpr := site.Params.logo_nlpr }}
-  {{ $logo_casia := site.Params.logo_casia }}
+  {{ $language := site.Params.languagecode }}
+  {{ $media_dir := .Page.Scratch.Get "media_dir" }}
+
+  {{ $language := "" }}
+  {{ if eq site.Params.languagecode "zh-Hans" }}
+    {{ $language = "zh" }}
+  {{ else if eq site.Params.languagecode "en-us" }}
+    {{ $language = "en" }}
+  {{ end }}
+
+  {{ $logo_nlpr := (printf "%s/%s/%s" $media_dir $language site.Params.logo_nlpr | relURL) }}
+  {{ $logo_casia := (printf "%s/%s/%s" $media_dir $language site.Params.logo_casia | relURL) }}
+
   <div class="logo_img2">
     <img src="{{$logo_casia}}" class="img3" />
-    <img src="{{$logo_nlpr}}" class="img3" style="margin-top: 10px;" />
+    <img src="{{$logo_nlpr}}" class="img3"  />
   </div>
 </footer>
 
