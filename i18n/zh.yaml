@@ -131,7 +131,7 @@
   translation: 出版物
 
 - id: publication_type
-  translation: 全部
+  translation: 论文
 
 - id: date
   translation: 日期
