@@ -142,7 +142,7 @@
   translation: Publication
 
 - id: publication_type
-  translation: Selected Publications
+  translation: Selected publications
 
 - id: date
   translation: Date
