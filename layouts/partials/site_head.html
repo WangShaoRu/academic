@@ -218,6 +218,7 @@
 
   {{ partial "custom_head" . }}
 
-  <title>{{ if not .IsHome }}{{ .Title }} | {{ end }}{{ site.Title }}</title>
+  <!-- <title>{{ if not .IsHome }}{{ .Title }} | {{ end }}{{ site.Params.head_title }}</title> -->
+  <title>{{ site.Params.head_title }}</title>
 
 </head>
