@@ -29,11 +29,13 @@
 
   <p class="powered-by">
     {{ if not site.Params.i_am_a_sponsor }}
-    </br></br>
-    Copyright © 2017-2020 VSLab</br>
-    <!-- <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">模式识别国家重点实验室</a></br> -->
-    <a href="http://www.nlpr.ia.ac.cn/">模式识别国家重点实验室</a></br>
-    <a href="http://www.ia.cas.cn/">中国科学院自动化研究所</a></br>
+      </br></br>
+      {{ if eq site.Params.languagecode "en-us"}}
+        Copyright © 2020 Vision & Security Laboratory</br>
+      {{ else if eq site.Params.languagecode "zh-Hans"}}
+        Copyright © 2020 视频内容安全研究组</br>
+      {{ end }}
+      Powered by the <a href="https://sourcethemes.com/academic/">Academic</a> theme for <a href="https://gohugo.io/">Hugo</a>.
     {{ end }}
   </p>
 
